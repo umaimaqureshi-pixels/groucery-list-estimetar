@@ -1,1 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Grocery Shopping List Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .category-card {
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ingredient-item {
+            transition: all 0.2s ease;
+        }
+        
+        .ingredient-item:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .portion-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .portion-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .grocery-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .category-produce { border-left: 4px solid #10b981; }
+        .category-dairy { border-left: 4px solid #f59e0b; }
+        .category-meat { border-left: 4px solid #ef4444; }
+        .category-pantry { border-left: 4px solid #8b5cf6; }
+        .category-household { border-left: 4px solid #06b6d4; }
+        .category-frozen { border-left: 4px solid #3b82f6; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="grocery-header rounded-2xl shadow-xl p-8 mb-8 text-white">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold mb-2">🛒 Home Grocery List Builder</h1>
+                <p class="text-xl opacity-90">Smart shopping for your household needs</p>
+            </div>
+        </div>
+
+        <!-- Household Size Selector -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <div class="text-center">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Household Size</h2>
+                <div class="flex items-center justify-center gap-4 mb-4">
+                    <button onclick="adjustHouseholdSize(-1)" class="portion-btn bg-red-500 hover:bg-red-600 text-white w-12 h-12 rounded-full text-xl font-bold shadow-lg">-</button>
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl shadow-lg">
+                        <span class="text-3xl font-bold" id="householdSize">4</span>
+                        <span class="text-lg ml-2">people</span>
+                    </div>
+                    <button onclick="adjustHouseholdSize(1)" class="portion-btn bg-green-500 hover:bg-green-600 text-white w-12 h-12 rounded-full text-xl font-bold shadow-lg">+</button>
+                </div>
+                <p class="text-gray-500">Weekly shopping for your household</p>
+            </div>
+        </div>
+
+        <!-- Shopping Categories -->
+        <div class="grid gap-6 lg:grid-cols-2">
+            <!-- Fresh Produce -->
+            <div class="category-card bg-white rounded-2xl shadow-lg p-6 category-produce">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-3">🥬</span>
+                    Fresh Produce
+                </h3>
+                <div class="space-y-3">
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Bananas</span>
+                        <div class="text-right">
+                            <span class="font-bold text-green-600" id="bananas">2 lbs</span>
+                            <div class="text-sm text-gray-500" id="bananas-metric">(900g)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Apples</span>
+                        <div class="text-right">
+                            <span class="font-bold text-green-600" id="apples">3 lbs</span>
+                            <div class="text-sm text-gray-500" id="apples-metric">(1.4kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Carrots</span>
+                        <div class="text-right">
+                            <span class="font-bold text-green-600" id="carrots">2 lbs</span>
+                            <div class="text-sm text-gray-500" id="carrots-metric">(900g)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Onions</span>
+                        <div class="text-right">
+                            <span class="font-bold text-green-600" id="onions">3 lbs</span>
+                            <div class="text-sm text-gray-500" id="onions-metric">(1.4kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Potatoes</span>
+                        <div class="text-right">
+                            <span class="font-bold text-green-600" id="potatoes">5 lbs</span>
+                            <div class="text-sm text-gray-500" id="potatoes-metric">(2.3kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Lettuce</span>
+                        <div class="text-right">
+                            <span class="font-bold text-green-600" id="lettuce">2 heads</span>
+                            <div class="text-sm text-gray-500" id="lettuce-metric">(600g)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dairy & Eggs -->
+            <div class="category-card bg-white rounded-2xl shadow-lg p-6 category-dairy">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-3">🥛</span>
+                    Dairy & Eggs
+                </h3>
+                <div class="space-y-3">
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Milk (Gallon)</span>
+                        <div class="text-right">
+                            <span class="font-bold text-amber-600" id="milk">1 gallon</span>
+                            <div class="text-sm text-gray-500" id="milk-metric">(3.8L)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Eggs (Dozen)</span>
+                        <div class="text-right">
+                            <span class="font-bold text-amber-600" id="eggs">2 dozen</span>
+                            <div class="text-sm text-gray-500" id="eggs-metric">(24 eggs)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Butter</span>
+                        <div class="text-right">
+                            <span class="font-bold text-amber-600" id="butter">2 sticks</span>
+                            <div class="text-sm text-gray-500" id="butter-metric">(225g)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Cheese (Shredded)</span>
+                        <div class="text-right">
+                            <span class="font-bold text-amber-600" id="cheese">2 bags</span>
+                            <div class="text-sm text-gray-500" id="cheese-metric">(450g)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Yogurt</span>
+                        <div class="text-right">
+                            <span class="font-bold text-amber-600" id="yogurt">4 cups</span>
+                            <div class="text-sm text-gray-500" id="yogurt-metric">(950ml)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meat & Protein -->
+            <div class="category-card bg-white rounded-2xl shadow-lg p-6 category-meat">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-3">🥩</span>
+                    Meat & Protein
+                </h3>
+                <div class="space-y-3">
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Ground Beef</span>
+                        <div class="text-right">
+                            <span class="font-bold text-red-600" id="groundBeef">2 lbs</span>
+                            <div class="text-sm text-gray-500" id="groundBeef-metric">(900g)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Chicken Breast</span>
+                        <div class="text-right">
+                            <span class="font-bold text-red-600" id="chickenBreast">3 lbs</span>
+                            <div class="text-sm text-gray-500" id="chickenBreast-metric">(1.4kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Salmon Fillets</span>
+                        <div class="text-right">
+                            <span class="font-bold text-red-600" id="salmon">2 lbs</span>
+                            <div class="text-sm text-gray-500" id="salmon-metric">(900g)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Deli Turkey</span>
+                        <div class="text-right">
+                            <span class="font-bold text-red-600" id="deliTurkey">1 lb</span>
+                            <div class="text-sm text-gray-500" id="deliTurkey-metric">(450g)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pantry Staples -->
+            <div class="category-card bg-white rounded-2xl shadow-lg p-6 category-pantry">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-3">🏺</span>
+                    Pantry Staples
+                </h3>
+                <div class="space-y-3">
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Rice (5lb bag)</span>
+                        <div class="text-right">
+                            <span class="font-bold text-purple-600" id="rice">1 bag</span>
+                            <div class="text-sm text-gray-500" id="rice-metric">(2.3kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Pasta</span>
+                        <div class="text-right">
+                            <span class="font-bold text-purple-600" id="pasta">4 boxes</span>
+                            <div class="text-sm text-gray-500" id="pasta-metric">(2kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Bread (Loaves)</span>
+                        <div class="text-right">
+                            <span class="font-bold text-purple-600" id="bread">2 loaves</span>
+                            <div class="text-sm text-gray-500" id="bread-metric">(1.4kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Canned Tomatoes</span>
+                        <div class="text-right">
+                            <span class="font-bold text-purple-600" id="cannedTomatoes">4 cans</span>
+                            <div class="text-sm text-gray-500" id="cannedTomatoes-metric">(1.6kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Olive Oil</span>
+                        <div class="text-right">
+                            <span class="font-bold text-purple-600" id="oliveOil">1 bottle</span>
+                            <div class="text-sm text-gray-500" id="oliveOil-metric">(500ml)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Household Items -->
+            <div class="category-card bg-white rounded-2xl shadow-lg p-6 category-household">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-3">🧽</span>
+                    Household Items
+                </h3>
+                <div class="space-y-3">
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Toilet Paper</span>
+                        <div class="text-right">
+                            <span class="font-bold text-cyan-600" id="toiletPaper">12 rolls</span>
+                            <div class="text-sm text-gray-500" id="toiletPaper-metric">(12 rolls)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Paper Towels</span>
+                        <div class="text-right">
+                            <span class="font-bold text-cyan-600" id="paperTowels">6 rolls</span>
+                            <div class="text-sm text-gray-500" id="paperTowels-metric">(6 rolls)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Dish Soap</span>
+                        <div class="text-right">
+                            <span class="font-bold text-cyan-600" id="dishSoap">2 bottles</span>
+                            <div class="text-sm text-gray-500" id="dishSoap-metric">(1.4L)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Laundry Detergent</span>
+                        <div class="text-right">
+                            <span class="font-bold text-cyan-600" id="laundryDetergent">1 bottle</span>
+                            <div class="text-sm text-gray-500" id="laundryDetergent-metric">(2L)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frozen Foods -->
+            <div class="category-card bg-white rounded-2xl shadow-lg p-6 category-frozen">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-3">🧊</span>
+                    Frozen Foods
+                </h3>
+                <div class="space-y-3">
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Frozen Vegetables</span>
+                        <div class="text-right">
+                            <span class="font-bold text-blue-600" id="frozenVeggies">4 bags</span>
+                            <div class="text-sm text-gray-500" id="frozenVeggies-metric">(2kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Ice Cream</span>
+                        <div class="text-right">
+                            <span class="font-bold text-blue-600" id="iceCream">2 containers</span>
+                            <div class="text-sm text-gray-500" id="iceCream-metric">(2L)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Frozen Pizza</span>
+                        <div class="text-right">
+                            <span class="font-bold text-blue-600" id="frozenPizza">2 pizzas</span>
+                            <div class="text-sm text-gray-500" id="frozenPizza-metric">(1.2kg)</div>
+                        </div>
+                    </div>
+                    <div class="ingredient-item flex justify-between items-center p-3 rounded-lg">
+                        <span class="font-medium text-gray-700">Frozen Berries</span>
+                        <div class="text-right">
+                            <span class="font-bold text-blue-600" id="frozenBerries">2 bags</span>
+                            <div class="text-sm text-gray-500" id="frozenBerries-metric">(1kg)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 justify-center mt-8">
+            <button onclick="printList()" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                📄 Print Shopping List
+            </button>
+            <button onclick="resetList()" class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all duration-200">
+                🔄 Reset to Default
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentHouseholdSize = 4;
+        
+        // Base quantities for 4 people (weekly shopping)
+        const baseQuantities = {
+            // Fresh Produce
+            bananas: { amount: 2, unit: 'lbs', metric: 900, metricUnit: 'g' },
+            apples: { amount: 3, unit: 'lbs', metric: 1.4, metricUnit: 'kg' },
+            carrots: { amount: 2, unit: 'lbs', metric: 900, metricUnit: 'g' },
+            onions: { amount: 3, unit: 'lbs', metric: 1.4, metricUnit: 'kg' },
+            potatoes: { amount: 5, unit: 'lbs', metric: 2.3, metricUnit: 'kg' },
+            lettuce: { amount: 2, unit: 'heads', metric: 600, metricUnit: 'g' },
+            
+            // Dairy & Eggs
+            milk: { amount: 1, unit: 'gallon', metric: 3.8, metricUnit: 'L' },
+            eggs: { amount: 2, unit: 'dozen', metric: 24, metricUnit: 'eggs' },
+            butter: { amount: 2, unit: 'sticks', metric: 225, metricUnit: 'g' },
+            cheese: { amount: 2, unit: 'bags', metric: 450, metricUnit: 'g' },
+            yogurt: { amount: 4, unit: 'cups', metric: 950, metricUnit: 'ml' },
+            
+            // Meat & Protein
+            groundBeef: { amount: 2, unit: 'lbs', metric: 900, metricUnit: 'g' },
+            chickenBreast: { amount: 3, unit: 'lbs', metric: 1.4, metricUnit: 'kg' },
+            salmon: { amount: 2, unit: 'lbs', metric: 900, metricUnit: 'g' },
+            deliTurkey: { amount: 1, unit: 'lb', metric: 450, metricUnit: 'g' },
+            
+            // Pantry Staples
+            rice: { amount: 1, unit: 'bag', metric: 2.3, metricUnit: 'kg' },
+            pasta: { amount: 4, unit: 'boxes', metric: 2, metricUnit: 'kg' },
+            bread: { amount: 2, unit: 'loaves', metric: 1.4, metricUnit: 'kg' },
+            cannedTomatoes: { amount: 4, unit: 'cans', metric: 1.6, metricUnit: 'kg' },
+            oliveOil: { amount: 1, unit: 'bottle', metric: 500, metricUnit: 'ml' },
+            
+            // Household Items
+            toiletPaper: { amount: 12, unit: 'rolls', metric: 12, metricUnit: 'rolls' },
+            paperTowels: { amount: 6, unit: 'rolls', metric: 6, metricUnit: 'rolls' },
+            dishSoap: { amount: 2, unit: 'bottles', metric: 1.4, metricUnit: 'L' },
+            laundryDetergent: { amount: 1, unit: 'bottle', metric: 2, metricUnit: 'L' },
+            
+            // Frozen Foods
+            frozenVeggies: { amount: 4, unit: 'bags', metric: 2, metricUnit: 'kg' },
+            iceCream: { amount: 2, unit: 'containers', metric: 2, metricUnit: 'L' },
+            frozenPizza: { amount: 2, unit: 'pizzas', metric: 1.2, metricUnit: 'kg' },
+            frozenBerries: { amount: 2, unit: 'bags', metric: 1, metricUnit: 'kg' }
+        };
+
+        function adjustHouseholdSize(change) {
+            const newSize = currentHouseholdSize + change;
+            if (newSize >= 1 && newSize <= 12) {
+                currentHouseholdSize = newSize;
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('householdSize').textContent = currentHouseholdSize;
+            
+            const multiplier = currentHouseholdSize / 4;
+            
+            Object.keys(baseQuantities).forEach(item => {
+                const base = baseQuantities[item];
+                let newAmount = base.amount * multiplier;
+                let newMetricAmount = base.metric * multiplier;
+                
+                // Format the amount appropriately
+                let displayAmount;
+                if (['bag', 'bottle', 'gallon', 'dozen'].includes(base.unit)) {
+                    displayAmount = Math.ceil(newAmount);
+                } else if (['heads', 'loaves', 'cans', 'rolls', 'bags', 'containers', 'pizzas', 'boxes', 'sticks'].includes(base.unit)) {
+                    displayAmount = Math.round(newAmount);
+                } else {
+                    // For lbs and cups, round to nearest 0.5
+                    displayAmount = Math.round(newAmount * 2) / 2;
+                }
+                
+                // Format metric amount
+                let displayMetricAmount;
+                if (base.metricUnit === 'kg' && newMetricAmount < 1) {
+                    displayMetricAmount = Math.round(newMetricAmount * 1000);
+                    displayMetricAmount = `${displayMetricAmount}g`;
+                } else if (base.metricUnit === 'L' && newMetricAmount < 1) {
+                    displayMetricAmount = Math.round(newMetricAmount * 1000);
+                    displayMetricAmount = `${displayMetricAmount}ml`;
+                } else if (base.metricUnit === 'g' && newMetricAmount >= 1000) {
+                    displayMetricAmount = Math.round(newMetricAmount / 1000 * 10) / 10;
+                    displayMetricAmount = `${displayMetricAmount}kg`;
+                } else if (base.metricUnit === 'ml' && newMetricAmount >= 1000) {
+                    displayMetricAmount = Math.round(newMetricAmount / 1000 * 10) / 10;
+                    displayMetricAmount = `${displayMetricAmount}L`;
+                } else if (base.metricUnit === 'eggs' || base.metricUnit === 'rolls') {
+                    displayMetricAmount = `${Math.round(newMetricAmount)} ${base.metricUnit}`;
+                } else {
+                    displayMetricAmount = `${Math.round(newMetricAmount * 10) / 10}${base.metricUnit}`;
+                }
+                
+                const displayText = `${displayAmount} ${base.unit}${displayAmount > 1 && !['lbs'].includes(base.unit) ? '' : ''}`;
+                document.getElementById(item).textContent = displayText;
+                document.getElementById(item + '-metric').textContent = `(${displayMetricAmount})`;
+            });
+        }
+
+        function printList() {
+            let printContent = `HOME GROCERY SHOPPING LIST (${currentHouseholdSize} people - Weekly)\n\n`;
+            
+            const categories = {
+                'FRESH PRODUCE': ['bananas', 'apples', 'carrots', 'onions', 'potatoes', 'lettuce'],
+                'DAIRY & EGGS': ['milk', 'eggs', 'butter', 'cheese', 'yogurt'],
+                'MEAT & PROTEIN': ['groundBeef', 'chickenBreast', 'salmon', 'deliTurkey'],
+                'PANTRY STAPLES': ['rice', 'pasta', 'bread', 'cannedTomatoes', 'oliveOil'],
+                'HOUSEHOLD ITEMS': ['toiletPaper', 'paperTowels', 'dishSoap', 'laundryDetergent'],
+                'FROZEN FOODS': ['frozenVeggies', 'iceCream', 'frozenPizza', 'frozenBerries']
+            };
+            
+            Object.keys(categories).forEach(category => {
+                printContent += `${category}:\n`;
+                categories[category].forEach(item => {
+                    const element = document.getElementById(item);
+                    const itemName = element.parentElement.querySelector('.font-medium').textContent;
+                    printContent += `• ${element.textContent} - ${itemName}\n`;
+                });
+                printContent += '\n';
+            });
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head><title>Home Grocery Shopping List</title></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+                        <pre>${printContent}</pre>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function resetList() {
+            currentHouseholdSize = 4;
+            updateDisplay();
+        }
+
+        // Initialize display
+        updateDisplay();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f9ceaad573d055',t:'MTc1Nzk1Njk1OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
 # groucery-list-estimetar
